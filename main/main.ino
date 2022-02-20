@@ -10,33 +10,60 @@
 
 BluetoothSerial SerialBT;
 
+//globals to get mac addr of connecting user. MAX of 20 paired devices
+uint8_t pairedDeviceBtAddr[20][6];
+//this array is a global output holder for the bda2str function
+char bda_str[18];
 
+
+// converts bonded device address (array of 6 chars) to mac address seperated by colons
+// taken from https://github.com/espressif/arduino-esp32/commit/38c4c0610846b7193e908b474e2c8db06ae981ba
+char *bda2str(const uint8_t* bda, char *str, size_t size)
+{
+  if (bda == NULL || str == NULL || size < 18) {
+    return NULL;
+  }
+  sprintf(str, "%02x:%02x:%02x:%02x:%02x:%02x",
+          bda[0], bda[1], bda[2], bda[3], bda[4], bda[5]);
+  return str;
+}
+
+
+// Richard Li - 2020, public domain code
 void BTAuthCompleteCallback(boolean success)
 {
   if (success)
   {
     std::string clientDeviceName = ""; // for now, simply pass empty string for devicename. Mac addr is enough to uniquely identify a device
     std::string clientMacAddress = "";
-    const uint8_t* clientMacAddressArr = esp_bt_dev_get_address();
 
-    // build mac address from the returned array: Source: https://www.youtube.com/watch?v=fxvoNpiqipQ
-    for (size_t i = 0; i < 6; i++)
-    {
-      char pair[3];
-      // parse the ith bits into characters. pair of chars is 3 long due to null terminator.
-      // Left pad with 0's, taking a minimum of 2 characters
-      sprintf(pair, "%02x", (int)clientMacAddressArr[i]);
-      
-      // add the pair of characters to the mac
-      clientMacAddress += pair;
-      if (i < 5) clientMacAddress += ":";
+    // adapted from from https://github.com/espressif/arduino-esp32/commit/38c4c0610846b7193e908b474e2c8db06ae981ba
+    int count = esp_bt_gap_get_bond_device_num();
+    if(!count) Serial.println("No bonded device found.");
+    
+    // adapted from from https://github.com/espressif/arduino-esp32/commit/38c4c0610846b7193e908b474e2c8db06ae981ba
+    esp_err_t tError =  esp_bt_gap_get_bond_device_list(&count, pairedDeviceBtAddr);
+    if(ESP_OK == tError) {
+      for(int i = 0; i < count; i++) {
+        Serial.print("Found bonded device # "); Serial.print(i); Serial.print(" -> ");
+        Serial.println(bda2str(pairedDeviceBtAddr[i], bda_str, 18));
+
+        clientMacAddress = bda2str(pairedDeviceBtAddr[i], bda_str, 18);
+        add_friend_device(clientDeviceName, clientMacAddress);
+        SerialBT.unpairDevice(pairedDeviceBtAddr[i]);
+        // code to unpair the device. After registering the device, we want to unpair it
+        esp_err_t tError = esp_bt_gap_remove_bond_device(pairedDeviceBtAddr[i]);
+        if(ESP_OK == tError) {
+          Serial.print("Removed bonded device # "); 
+        } else {
+          Serial.print("Failed to remove bonded device # ");
+        }
+        Serial.println(i);
+        
+      }        
     }
-
-    Serial.printf("Built client mac: %s\n", clientMacAddress.c_str());
-
-    // store this string into db
-    add_friend_device(clientDeviceName, clientMacAddress);
-    Serial.println("Pairing success!!");
+    // disconnect from the device after unpairing from it
+    SerialBT.disconnect();
   }
   else
   {
@@ -46,9 +73,6 @@ void BTAuthCompleteCallback(boolean success)
 
 void setup() {
   Serial.begin(115200);
-
-
-
 
   // Registering a callback function for when a user pairs
   // Using IconEV's example code 
@@ -69,4 +93,5 @@ void loop() {
 
    //pairing not possible when getting discoverable devices, so leave a long delay here to allow time for any incoming pairs
   delay(5000);
+  Serial.print(SerialBT.hasClient());
 }
