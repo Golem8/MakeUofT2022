@@ -129,12 +129,15 @@ bool pairingAccept(){
   int threshold = 50;
   int wait_for_authenticate = 5000;
   int touch_value = INT_MAX; // start at the highest value
+  digitalWrite(redLED, HIGH);
   for (int i = 0; i < wait_for_authenticate; i++){
     if (touchRead(T0) < touch_value){
       touch_value = touchRead(T0);
     }
     delay(1);
   }
+  digitalWrite(redLED, LOW);
+
   if (touch_value < threshold){
     return true;
   }
