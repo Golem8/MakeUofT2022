@@ -54,7 +54,7 @@ void BTAuthCompleteCallback(boolean success)
         if (pairingAccept()) {
           Serial.printf("Accepted pairing via capacitive touch, adding mac %s to database", clientMacAddress.c_str());
           add_friend_device(clientDeviceName, clientMacAddress);
-         // place_MAC_in_list()
+        //  place_MAC_in_list(clientMacAddress); // place this to track the running global // NO WE DONT WANT TO TRACK IT, DO SNIP SNAP
         }else{
           Serial.printf("REJECTED pairing via capacitive touch, NOT ADDING mac %s to database", clientMacAddress.c_str());
         }
@@ -122,6 +122,9 @@ void friendDetectedPulser(){
       digitalWrite(vibratePIN, LOW);
       delay(offDur);
     }
+
+    // fulfilled our purposes, go back to false
+    friend_detection_flag = false;
 }
 
 bool pairingAccept(){
@@ -144,6 +147,56 @@ bool pairingAccept(){
     return true;
   }
   return false;
+}
+
+bool check_for_friend(std::vector<std::pair<std::string, std::string>> devices){
+  // parse the entire detected list, run each MAC entry with the running list
+  int devicesSz = devices.size();
+  for (int i = 0; i < devicesSz; i++){
+    string currentMAC = devices[i].second;
+    //bool didYaFindIt = is_MAC_in_vector(currentMac);
+    if (is_MAC_in_vector(currentMAC)){
+      friend_detection_flag = true;
+      // need to get the element in the vector that 
+      // we have the string, currentMAC, add this to the list and remove from vector
+      place_MAC_in_list(currentMAC);
+      friends_database.erase(friends_database.begin()+i);
+      return true; // friend detected and flipped
+    }
+  }
+  return false; // no friend detected in the list
+}
+
+// need to flip from the removed list to the original list
+bool check_for_friend_leaving_radius(std::vector<std::pair<std::string, std::string>> devices){
+  int devicesSz = devices.size();
+  // need to actually iterate through the currently detected friends list and make sure those values exist within current MAC
+  // if it exists, do nothing, BUT IF IT DOESNT EXIST THAT MEANS THEY LEFT SO SWAP BACK
+  int current_radius_list_size = detectable_friends.size();
+  for (auto it = detectable_friends.begin(); it != detectable_friends.end(); it++){
+    // for each element in the detectable list, cross reference that with the currently detected MAC list
+    bool weGotThisOne = false; // need to know if we hit a match ever
+    for (int i = 0; i < devicesSz; i++){
+      if ((*it) == devices[i].second){
+        weGotThisOne = true;
+      }
+    }
+    if (weGotThisOne){
+      // do nothing, we are still in range and picking up a detected device
+    }
+    else {
+      // snap back to the vector, friend no longer detected
+      digitalWrite(redLED, HIGH);
+      delay(1000);
+      digitalWrite(redLED, LOW); // make beep
+      // take out of list, add to vector
+      string friendMACAddress = *it; // hold the value
+      detectable_friends.remove(*it); // remove from list
+      add_friend_device("", friendMACAddress); // put back into detector
+      }
+
+  }
+return true; // idk
 }
 
 // Half the time, the ESP32 will be checking for nearby matches (5 seconds)
