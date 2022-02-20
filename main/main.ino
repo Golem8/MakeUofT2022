@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include "DeviceSearch.h"
+#include <esp_bt_main.h>
 #include <esp_bt_device.h>
 #include <BluetoothSerial.h>
 #include "Friends.h"
@@ -9,15 +10,11 @@
 
 BluetoothSerial SerialBT;
 
-// callback function for bluetooth events
-// Logic & function definiton taken from 
-// https://techtutorialsx.com/2018/12/09/esp32-arduino-serial-over-bluetooth-client-connection-event/
-void bt_event_callback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param){
 
-  Serial.println("Event Occurred");
-
-  // If the current event is a new client connection
-  if(event == ESP_SPP_SRV_OPEN_EVT){
+void BTAuthCompleteCallback(boolean success)
+{
+  if (success)
+  {
     std::string clientDeviceName = ""; // for now, simply pass empty string for devicename. Mac addr is enough to uniquely identify a device
     std::string clientMacAddress = "";
     const uint8_t* clientMacAddressArr = esp_bt_dev_get_address();
@@ -39,19 +36,24 @@ void bt_event_callback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param){
 
     // store this string into db
     add_friend_device(clientDeviceName, clientMacAddress);
-   // SerialBT.disconnect();
-    
+    Serial.println("Pairing success!!");
+  }
+  else
+  {
+    Serial.println("Pairing failed, rejected by user!!");
   }
 }
-
-
 
 void setup() {
   Serial.begin(115200);
 
-  // Registering a callback function (in case)
-  // https://techtutorialsx.com/2018/12/09/esp32-arduino-serial-over-bluetooth-client-connection-event/
-  SerialBT.register_callback(bt_event_callback);
+
+
+
+  // Registering a callback function for when a user pairs
+  // Using IconEV's example code 
+  // https://github.com/espressif/arduino-esp32/commit/38c4c0610846b7193e908b474e2c8db06ae981ba
+  SerialBT.onAuthComplete(BTAuthCompleteCallback);
 
   SerialBT.begin("Armband"); //Bluetooth device name
 
