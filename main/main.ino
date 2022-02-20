@@ -30,7 +30,7 @@ char *bda2str(const uint8_t* bda, char *str, size_t size)
 }
 
 
-// Richard Li - 2020, public domain code
+// Adapted from Richard Li - 2020, public domain code
 void BTAuthCompleteCallback(boolean success)
 {
   if (success)
