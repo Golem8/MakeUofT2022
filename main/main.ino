@@ -52,11 +52,11 @@ void BTAuthCompleteCallback(boolean success)
         clientMacAddress = bda2str(pairedDeviceBtAddr[i], bda_str, 18);
         
         if (pairingAccept()) {
-          Serial.printf("Accepted pairing via capacitive touch, adding mac %s to database", clientMacAddress);
+          Serial.printf("Accepted pairing via capacitive touch, adding mac %s to database", clientMacAddress.c_str());
           add_friend_device(clientDeviceName, clientMacAddress);
          // place_MAC_in_list()
         }else{
-          Serial.printf("REJECTED pairing via capacitive touch, NOT ADDING mac %s to database", clientMacAddress);
+          Serial.printf("REJECTED pairing via capacitive touch, NOT ADDING mac %s to database", clientMacAddress.c_str());
         }
 
         SerialBT.unpairDevice(pairedDeviceBtAddr[i]);
@@ -82,7 +82,7 @@ void BTAuthCompleteCallback(boolean success)
 
 
 const int greenLED = 5; // IO34 on GPIO corresponds to pin5 ADC-CH6
-const int redLED  = 6; // IO35 on GPIO corresponds to pin6 ADC-CH7
+const int redLED  = 7; // IO32 on GPIO corresponds to pin6 ADC-CH7
 const int vibratePIN = 8; //IO33 on GPIO corresponds to pin8 ADC-CH5
 // using them as output pins anyways so dont care about the input number variation thing between 0 and 4095
 
@@ -155,6 +155,8 @@ if (friend_detection_flag){
   // this is for the registered friend being discovered
   friendDetectedPulser();
 }
+
+
 
   std::vector<std::pair<std::string, std::string>> devices = getDiscoverableDevices(SerialBT);
    for(auto it = devices.begin(); it != devices.end(); it++){
