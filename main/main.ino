@@ -107,18 +107,15 @@ void setup() {
 
 void friendDetectedPulser(){
     // values in ms
-    int onDur = 2000;
-    int offDur = 1000;
-    int repetitions = 5;
+    int onDur = 1000;
+    int offDur = 500;
+    int repetitions = 8;
     // 2 up 1 down, 5 times
     for (int i = 0; i < repetitions; i++){
       digitalWrite(greenLED, HIGH);
-  //    digitalWrite(redLED, HIGH);
       digitalWrite(vibratePIN, HIGH);
       delay(onDur);
-
       digitalWrite(greenLED, LOW);
-    //  digitalWrite(redLED, LOW);
       digitalWrite(vibratePIN, LOW);
       delay(offDur);
     }
