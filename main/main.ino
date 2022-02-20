@@ -193,7 +193,8 @@ bool check_for_friend_leaving_radius(std::vector<std::pair<std::string, std::str
       // take out of list, add to vector
       string friendMACAddress = *it; // hold the value
       detectable_friends.remove(*it); // remove from list
-      add_friend_device("", friendMACAddress); // put back into detector
+      std::string empty = "";
+      add_friend_device(empty, friendMACAddress); // put back into detector
       }
 
   }
