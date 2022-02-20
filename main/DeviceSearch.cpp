@@ -20,7 +20,7 @@ void deviceFoundCb(BTAdvertisedDevice* foundDevice) {
   std::string name = foundDevice->getName();
   std::string addr = foundDevice->getAddress().toString();
   devicesFound.push_back(std::make_pair(name,addr));
-  Serial.printf("Found a device asynchronously: %s\n", foundDevice->toString().c_str());
+  // Serial.printf("Found a device asynchronously: %s\n", foundDevice->toString().c_str());
 }
 
 

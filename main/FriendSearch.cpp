@@ -1,10 +1,8 @@
-#include <iostream>
 #include <string>
 using namespace std;
 #include <vector>
+#include "Friends.h"
 
-#include "friends_class.cpp"
-#include "global_databases.cpp"
 
 // input is given as a vector of pairs, this input is going to be vector of pairs, name then address
 // lets make a parser so its ready for later
@@ -22,15 +20,4 @@ bool checkForFriendFromRawInputs(vector<pair<string , string >> devices){
         }
     }
     return false; // friend MAC not found
-}
-
-
-int main() {
-    bool stay = false;
-
-    while (stay){
-        
-    }
-
-    return 0;    
 }

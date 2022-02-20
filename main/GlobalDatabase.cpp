@@ -3,7 +3,8 @@
 using namespace std;
 #include <vector>
 
-#include "friends_class.cpp"
+#include "Friends.h"
+
 // friends database
 vector<friend_data> friends_database;
 

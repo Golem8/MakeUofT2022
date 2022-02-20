@@ -6,6 +6,7 @@
 
 #include <Arduino.h>
 #include "DeviceSearch.h"
+#include "Friends.h"
 
 
 
