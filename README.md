@@ -17,6 +17,7 @@ Lack of food reimbursement, caused emotional damage.
 
 
 **Contributions:**
+
 Muaz:
 Hardware Specialist.
 Worked with soldering, breadboarding, hardware troubleshooting using a DMM and reviewing hardware specifications of the ESP32.
