@@ -7,6 +7,11 @@ using namespace std;
 
 bool friend_detection_flag = false;
 
+bool is_MAC_in_list(string MAC); 
+void place_MAC_in_list(string MAC);
+bool remove_MAC_in_list(string MAC);
+
+
 bool checkForFriendFromRawInputs(vector<pair<string , string >> devices);
 void friendDetected();
 bool register_friend_to_device(string friend_name, string device_name);
