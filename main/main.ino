@@ -113,12 +113,12 @@ void friendDetectedPulser(){
     // 2 up 1 down, 5 times
     for (int i = 0; i < repetitions; i++){
       digitalWrite(greenLED, HIGH);
-      digitalWrite(redLED, HIGH);
+  //    digitalWrite(redLED, HIGH);
       digitalWrite(vibratePIN, HIGH);
       delay(onDur);
 
       digitalWrite(greenLED, LOW);
-      digitalWrite(redLED, LOW);
+    //  digitalWrite(redLED, LOW);
       digitalWrite(vibratePIN, LOW);
       delay(offDur);
     }
