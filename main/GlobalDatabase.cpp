@@ -43,7 +43,7 @@ bool remove_MAC_in_list(string MAC){
 // inputs given as either 2 strings or an object/pair with the device name and its address
 // GLOBAL DATABASE FUNCTIONS
 void add_friend_device(string device_name, string MAC){
-    if (is_MAC_in_vector()){
+    if (is_MAC_in_vector(MAC)){
         return;
     }
     friend_data tempFriend;
