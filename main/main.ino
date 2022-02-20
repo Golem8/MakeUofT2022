@@ -71,6 +71,14 @@ void BTAuthCompleteCallback(boolean success)
   }
 }
 
+
+const int greenLED = 5; // IO34 on GPIO corresponds to pin5 ADC-CH6
+const int redLED  = 6; // IO35 on GPIO corresponds to pin6 ADC-CH7
+const int vibratePIN = 8; //IO33 on GPIO corresponds to pin8 ADC-CH5
+// using them as output pins anyways so dont care about the input number variation thing between 0 and 4095
+
+// GPIO4 corresponds to pin13 which will be read in as T0 by the esp library
+
 void setup() {
   Serial.begin(115200);
 
@@ -80,12 +88,62 @@ void setup() {
   SerialBT.onAuthComplete(BTAuthCompleteCallback);
 
   SerialBT.begin("Armband"); //Bluetooth device name
+  pinMode(greenLED, OUTPUT);
+  pinMode(redLED, OUTPUT);
+  pinMode(vibratePIN, OUTPUT);
+  digitalWrite(vibratePIN, LOW);
+  digitalWrite(greenLED, LOW);
+  digitalWrite(redLED, LOW);
+}
 
+void friendDetectedPulser(){
+    // values in ms
+    int onDur = 2000;
+    int offDur = 1000;
+    int repetitions = 5;
+    // 2 up 1 down, 5 times
+    for (int i = 0; i < repetitions; i++){
+      digitalWrite(greenLED, HIGH);
+      digitalWrite(redLED, HIGH);
+      digitalWrite(vibratePIN, HIGH);
+      delay(onDUR);
+
+      digitalWrite(greenLED, LOW);
+      digitalWrite(redLED, LOW);
+      digitalWrite(vibratePIN, LOW);
+      delay(offDur);
+    }
+}
+
+bool pairingAccept(){
+  // return true if we accept by pressing during the interval of 2 seconds
+  // store the smallest value and compare at the end of the interval with the threshold, to be determined
+  // values decrease upon touch, threshold of 50
+  int threshold = 50;
+  int wait_for_authenticate = 5000;
+  int touch_value = INT_MAX; // start at the highest value
+  for (int i = 0; i < wait_for_authenticate; i++){
+    if (touchRead(T0) < touch_value){
+      touch_value = touchRead(T0);
+    }
+    delay(1);
+  }
+  if (touch_value < threshold){
+    return true;
+  }
+  return false;
 }
 
 // Half the time, the ESP32 will be checking for nearby matches (5 seconds)
 // The other half of the time, process incoming pair requests
 void loop() {
+// update global variable
+if (friend_detection_flag){
+  // call the routine to handle the vibrations and the flashing of the LED
+  // this is for the registered friend being discovered
+  friendDetectedPulser();
+}
+
   std::vector<std::pair<std::string, std::string>> devices = getDiscoverableDevices(SerialBT);
    for(auto it = devices.begin(); it != devices.end(); it++){
      Serial.printf("Name: %s                Addr: %s\n", (*it).first.c_str(), (*it).second.c_str());

@@ -5,7 +5,10 @@
 using namespace std;
 #include <vector>
 
+bool friend_detection_flag = false;
+
 bool checkForFriendFromRawInputs(vector<pair<string , string >> devices);
+void friendDetected();
 bool register_friend_to_device(string friend_name, string device_name);
 void add_friend_device(string device_name, string MAC);
 void remove_by_device_name(string device_name);
