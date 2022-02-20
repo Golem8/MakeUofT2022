@@ -81,9 +81,9 @@ void BTAuthCompleteCallback(boolean success)
 }
 
 
-const int greenLED = 5; // IO34 on GPIO corresponds to pin5 ADC-CH6
-const int redLED  = 7; // IO32 on GPIO corresponds to pin7 
-const int vibratePIN = 8; //IO33 on GPIO corresponds to pin8 ADC-CH5
+const int greenLED = 16; // P16
+const int redLED  = 17; // P17
+const int vibratePIN = 18; // P18
 // using them as output pins anyways so dont care about the input number variation thing between 0 and 4095
 
 // GPIO4 corresponds to pin13 which will be read in as T0 by the esp library
