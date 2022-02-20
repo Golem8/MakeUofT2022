@@ -19,7 +19,7 @@ Worked with soldering, breadboarding, hardware troubleshooting using a DMM and r
 
 Justin:
 Prototyping and Resource Management Specialist.
-Worked with resource collection, soldering, transistor implementation troubleshooting assembly of the physical prototype. 
+Worked with resource collection, soldering, transistor implementation and troubleshooting assembly of the physical prototype. 
 
 Rohan:
 Database Management and Arduino Logic Software Specialist.
