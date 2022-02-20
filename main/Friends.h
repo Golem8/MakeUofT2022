@@ -5,7 +5,7 @@
 using namespace std;
 #include <vector>
 
-bool friend_detection_flag = false;
+
 
 bool is_MAC_in_list(string MAC); 
 void place_MAC_in_list(string MAC);

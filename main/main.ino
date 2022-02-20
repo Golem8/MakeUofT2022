@@ -15,6 +15,7 @@ uint8_t pairedDeviceBtAddr[20][6];
 //this array is a global output holder for the bda2str function
 char bda_str[18];
 
+bool friend_detection_flag = false;
 
 // converts bonded device address (array of 6 chars) to mac address seperated by colons
 // taken from https://github.com/espressif/arduino-esp32/commit/38c4c0610846b7193e908b474e2c8db06ae981ba
