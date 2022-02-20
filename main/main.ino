@@ -49,7 +49,14 @@ void BTAuthCompleteCallback(boolean success)
         Serial.println(bda2str(pairedDeviceBtAddr[i], bda_str, 18));
 
         clientMacAddress = bda2str(pairedDeviceBtAddr[i], bda_str, 18);
-        add_friend_device(clientDeviceName, clientMacAddress);
+        
+        if (pairingAccept) {
+          Serial.printf("Accepted pairing via capacitive touch, adding mac %s to database", clientMacAddress);
+          add_friend_device(clientDeviceName, clientMacAddress);
+        }else{
+          Serial.printf("REJECTED pairing via capacitive touch, NOT ADDING mac %s to database", clientMacAddress);
+        }
+
         SerialBT.unpairDevice(pairedDeviceBtAddr[i]);
         // code to unpair the device. After registering the device, we want to unpair it
         esp_err_t tError = esp_bt_gap_remove_bond_device(pairedDeviceBtAddr[i]);
@@ -151,5 +158,4 @@ if (friend_detection_flag){
 
    //pairing not possible when getting discoverable devices, so leave a long delay here to allow time for any incoming pairs
   delay(5000);
-  Serial.print(SerialBT.hasClient());
 }
