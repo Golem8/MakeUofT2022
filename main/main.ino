@@ -50,7 +50,7 @@ void BTAuthCompleteCallback(boolean success)
 
         clientMacAddress = bda2str(pairedDeviceBtAddr[i], bda_str, 18);
         
-        if (pairingAccept) {
+        if (pairingAccept()) {
           Serial.printf("Accepted pairing via capacitive touch, adding mac %s to database", clientMacAddress);
           add_friend_device(clientDeviceName, clientMacAddress);
         }else{
