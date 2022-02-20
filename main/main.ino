@@ -156,7 +156,8 @@ bool check_for_friend(std::vector<std::pair<std::string, std::string>> devices){
     string currentMAC = devices[i].second;
     //bool didYaFindIt = is_MAC_in_vector(currentMac);
     if (is_MAC_in_vector(currentMAC)){
-      friend_detection_flag = true;
+      //friend_detection_flag = true;
+      friendDetectedPulser();
       // need to get the element in the vector that 
       // we have the string, currentMAC, add this to the list and remove from vector
       place_MAC_in_list(currentMAC);
@@ -202,20 +203,14 @@ return true; // idk
 // Half the time, the ESP32 will be checking for nearby matches (5 seconds)
 // The other half of the time, process incoming pair requests
 void loop() {
-// update global variable
-if (friend_detection_flag){
-  // call the routine to handle the vibrations and the flashing of the LED
-  // this is for the registered friend being discovered
-  friendDetectedPulser();
-}
-
 
 
   std::vector<std::pair<std::string, std::string>> devices = getDiscoverableDevices(SerialBT);
    for(auto it = devices.begin(); it != devices.end(); it++){
      Serial.printf("Name: %s                Addr: %s\n", (*it).first.c_str(), (*it).second.c_str());
    }
-
+  check_for_friend(devices);
+  check_for_friend_leaving_radius(devices);
    //pairing not possible when getting discoverable devices, so leave a long delay here to allow time for any incoming pairs
   delay(5000);
 }
