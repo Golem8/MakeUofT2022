@@ -44,6 +44,8 @@ void bt_event_callback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param){
   }
 }
 
+
+
 void setup() {
   Serial.begin(115200);
 
@@ -62,5 +64,7 @@ void loop() {
    for(auto it = devices.begin(); it != devices.end(); it++){
      Serial.printf("Name: %s                Addr: %s\n", (*it).first.c_str(), (*it).second.c_str());
    }
-  //delay(4000);
+
+   //pairing not possible when getting discoverable devices, so leave a long delay here to allow time for any incoming pairs
+  delay(5000);
 }

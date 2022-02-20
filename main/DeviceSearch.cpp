@@ -13,7 +13,7 @@
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
 
-#define BT_DISCOVER_TIME  10000 // 1000 sometimes worked, sometimes failed. 10000 should ensure reliable detection
+#define BT_DISCOVER_TIME  5000 // 1000 sometimes worked, sometimes failed. 5k should ensure reliable detection
 
 // vector of string pairs of the form (name, address)
 std::vector<std::pair<std::string, std::string>> devicesFound;
