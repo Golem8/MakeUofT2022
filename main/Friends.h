@@ -1,3 +1,6 @@
+#ifndef FRIENDS_H
+#define FRIENDS_H
+
 #include <string>
 using namespace std;
 #include <vector>
@@ -14,3 +17,5 @@ struct friend_data {
     string MacAddress;
     string deviceName;
 };
+
+#endif

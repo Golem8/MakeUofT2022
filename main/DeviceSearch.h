@@ -3,8 +3,10 @@
 
 #include <vector>       // std::vector
 #include <string>       // std::string
+#include <BluetoothSerial.h>
 
-std::vector<std::pair<std::string, std::string>> getDiscoverableDevices();
+
+std::vector<std::pair<std::string, std::string>> getDiscoverableDevices(BluetoothSerial SerialBT);
 
 
 

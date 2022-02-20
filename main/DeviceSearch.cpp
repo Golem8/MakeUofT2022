@@ -1,5 +1,10 @@
+/*
+  Adapted from example written by Thomas M. (ArcticSnowSky)
+  See commit: https://github.com/espressif/arduino-esp32/commit/41c372c143a9585d67110782e735d80813f1889f
+  
+*/
+
 #include "DeviceSearch.h"
-#include <BluetoothSerial.h>
 #include <vector>       // std::vector
 #include <utility>      // std::pair, std::make_pair
 #include <string>       // std::string
@@ -14,9 +19,7 @@
 std::vector<std::pair<std::string, std::string>> devicesFound;
 
 
-
 void deviceFoundCb(BTAdvertisedDevice* foundDevice) {
-  
   std::string name = foundDevice->getName();
   std::string addr = foundDevice->getAddress().toString();
   devicesFound.push_back(std::make_pair(name,addr));
@@ -24,18 +27,17 @@ void deviceFoundCb(BTAdvertisedDevice* foundDevice) {
 }
 
 
-std::vector<std::pair<std::string, std::string>> getDiscoverableDevices(){
-    BluetoothSerial SerialBT;
-    SerialBT.begin("Armband"); //Bluetooth device name
-  
-    devicesFound.clear(); //start with an empty device list
+std::vector<std::pair<std::string, std::string>> getDiscoverableDevices(BluetoothSerial SerialBT){
+  devicesFound.clear(); //start with an empty device list
 
+  // perform the asyncronous search for nearby bt devices. Wait for a specified amount of time before returning to loop()
+  // Any devices found will call the callback, which stores them in devicesFound, which is retruned by this function
   if (SerialBT.discoverAsync(deviceFoundCb)) {
     delay(BT_DISCOVER_TIME);
-    SerialBT.discoverAsyncStop();
-    
-    return devicesFound;
+    SerialBT.discoverAsyncStop();    
   } else {
     Serial.println("Error on discoverAsync f.e. not workin after a \"connect\"");
   }
+
+    return devicesFound;
 }
