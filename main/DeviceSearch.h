@@ -6,7 +6,7 @@
 #include <BluetoothSerial.h>
 
 
-std::vector<std::pair<std::string, std::string>> getDiscoverableDevices(BluetoothSerial SerialBT);
+std::vector<std::pair<std::string, std::string>> getDiscoverableDevices(BluetoothSerial& SerialBT);
 
 
 

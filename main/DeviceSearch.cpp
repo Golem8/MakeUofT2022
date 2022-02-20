@@ -27,14 +27,16 @@ void deviceFoundCb(BTAdvertisedDevice* foundDevice) {
 }
 
 
-std::vector<std::pair<std::string, std::string>> getDiscoverableDevices(BluetoothSerial SerialBT){
+std::vector<std::pair<std::string, std::string>> getDiscoverableDevices(BluetoothSerial& SerialBT){
   devicesFound.clear(); //start with an empty device list
 
   // perform the asyncronous search for nearby bt devices. Wait for a specified amount of time before returning to loop()
   // Any devices found will call the callback, which stores them in devicesFound, which is retruned by this function
   if (SerialBT.discoverAsync(deviceFoundCb)) {
     delay(BT_DISCOVER_TIME);
-    SerialBT.discoverAsyncStop();    
+    SerialBT.discoverAsyncStop();  
+    SerialBT.discoverClear();
+
   } else {
     Serial.println("Error on discoverAsync f.e. not workin after a \"connect\"");
   }
