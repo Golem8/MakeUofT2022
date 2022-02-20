@@ -213,5 +213,5 @@ void loop() {
   check_for_friend(devices);
   check_for_friend_leaving_radius(devices);
    //pairing not possible when getting discoverable devices, so leave a long delay here to allow time for any incoming pairs
-  delay(5000);
+  delay(3000);
 }
