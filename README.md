@@ -9,12 +9,7 @@ Portable device that is able to tell when a friend is nearby and alert you via a
 An ESP32 microcontroller with bluetooth capabilities that handles the pairing of the friend's device and detection of said device via bluetooth discovery. An Arduino that acts as a voltage regulator to the ESP32, and output to the transistor acting as a switch. Arduino also handles power delivery to the motor for the vibration generator, while the ESP handles the LED power delivery.
 
 **Challenges:**
-The Bluetooth Serial Library for Arduino was poorly documented, making the bluetooth detection and pairing functionalities of our design difficult to implement. 
-The ESP32 microcontroller's documentation was poorly maintained, causing much confusion with the hardware portion and subsequent software testing.
-Bluetooth technology in of itself is limited due to privacy concerns, meaning sensing capabilities are limited to devices either in discovery or previously paired devices. It forced the solution space for our project to be fairly narrow. Limiting our creativity but driving us down a more straight solution path.
-Finding materials for making the prototype. We had to get creative and be as resourceful as possible, using second-hand items and fashioning cardboard to build our wearable prototype. Lack of a 3D printer or access to a hardware store during the main crunch time of our project (overnight) was difficult to overcome.
-Lack of food reimbursement, caused emotional damage.
-
+The Bluetooth Serial Library for Arduino was poorly documented, making the bluetooth detection and pairing functionalities of our design difficult to implement. The ESP32 microcontroller's documentation and pinouts were unclear, causing confusion during the hardware portion. Bluetooth technology in of itself is limited due to privacy concerns, meaning sensing capabilities are limited to devices either in discovery mode or previously paired devices, forcing our solution space to be fairly narrow. We had to get creative and be as resourceful as possible, using second-hand items and fashioning cardboard to build our wearable prototype. Lack of a 3D printer or access to a hardware store during the main crunch time of our project meant additional creativity was required to successfully implement our prototype.
 
 **Contributions:**
 
