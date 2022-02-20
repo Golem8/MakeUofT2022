@@ -5,12 +5,8 @@ using namespace std;
 
 #include "Friends.h"
 
-// friends database
-vector<friend_data> friends_database;
-
-// new to proximity friends, who have not triggered detection sequence yet
-// this will take from the friends_database, and then remove when a friend is detected, add that person back when they leave
-list<string> detectable_friends;
+vector<friend_data> friends_database = {};
+list<string> detectable_friends = {};
 
 // CURRENT LIST FUNCTIONS
 // check if the queried MAC is already in the list
