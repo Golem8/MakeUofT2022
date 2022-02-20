@@ -113,7 +113,7 @@ void friendDetectedPulser(){
       digitalWrite(greenLED, HIGH);
       digitalWrite(redLED, HIGH);
       digitalWrite(vibratePIN, HIGH);
-      delay(onDUR);
+      delay(onDur);
 
       digitalWrite(greenLED, LOW);
       digitalWrite(redLED, LOW);
